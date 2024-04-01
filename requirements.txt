@@ -1,4 +1,4 @@
 selenium
 pillow
 pyinstaller
-jsoncparser
+json-with-comments
