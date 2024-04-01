@@ -1,7 +1,10 @@
 {
-    "items": {
-        "現実恋愛-すべて":"https://yomou.syosetu.com/rank/genrelist/type/daily_102/"
-    },
+    "items": [
+        // 日間現実恋愛1-50位
+        "https://yomou.syosetu.com/rank/genrelist/type/daily_102/?p=1",
+        // 日間現実恋愛51-100位
+        "https://yomou.syosetu.com/rank/genrelist/type/daily_102/?p=2"
+    ],
     "texts": [],
     "keywords": ["幼馴染"]
 }

@@ -1,5 +1,5 @@
 import time
-import json
+import jsonc
 import base64
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -13,7 +13,7 @@ import re
 
 # ラベルとURLのペア
 with open('config.json', 'r', encoding='utf-8') as f:
-    config = json.load(f)
+    config = jsonc.load(f)
 
 items = config['items']
 texts = config['texts']
@@ -45,7 +45,7 @@ def sanitize(filename, os_name=None):
     sanitized_filename = re.sub(invalid_chars, '_', filename)
     return sanitized_filename
 
-def save_screenshots(driver, label, directory_path, texts, keywords):
+def save_screenshots(driver, directory_path, texts, keywords):
     base_elements  = driver.find_elements(By.XPATH, f"//div[contains(@class, 'c-card') and contains(@class, 'p-ranklist-item')]")
     for i, base_element in enumerate(base_elements):
         found = False
@@ -83,19 +83,21 @@ def save_screenshots(driver, label, directory_path, texts, keywords):
             continue
     pass
 
-def capture(label, url):
+def capture(url):
     browser.get(url)
     browser.refresh()
+
+    label = browser.find_element(By.XPATH, "//h2[@class='c-page-title__text']").text
+    print(label)
 
     out_dir = f"out/{label}"
     os.makedirs(out_dir, exist_ok=True)
 
     save_screenshots(
-        browser, label, f"{out_dir}", texts, keywords
+        browser, f"{out_dir}", texts, keywords
     )
 
 print("キャプチャ開始：")
-for label, url in items.items():
-    capture(label, url + "?p=1")
-    capture(label, url + "?p=2")
+for url in items:
+    capture(url)
 print("キャプチャ終了：")
