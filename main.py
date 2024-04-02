@@ -83,11 +83,12 @@ def save_screenshots(driver, directory_path, texts, keywords):
             continue
     pass
 
-def capture(url):
+def capture(label, url):
     browser.get(url)
     browser.refresh()
 
-    label = browser.find_element(By.XPATH, "//h2[@class='c-page-title__text']").text
+    if not label:
+        label = browser.find_element(By.XPATH, "//h2[@class='c-page-title__text']").text
     print(label)
 
     out_dir = f"out/{label}"
@@ -98,6 +99,12 @@ def capture(url):
     )
 
 print("キャプチャ開始：")
-for url in items:
-    capture(url)
+for item in items:
+    if isinstance(item, dict):
+        label = item['label']
+        url = item['url']
+    else:
+        label = None
+        url = item
+    capture(label, url)
 print("キャプチャ終了：")
